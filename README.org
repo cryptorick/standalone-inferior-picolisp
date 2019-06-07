@@ -30,3 +30,34 @@ tj64's picolisp mode and then edited to remove things which were
 particular to tj64's picolisp mode, so as to minimize (hopefully,
 eliminate) issues (like namespace pollution and symbol trouncing) with
 respect to flexibeast's picolisp mode.
+
+** Install
+
+Note, that this repo does not contain "a real package" so I'm not
+pushing this to MELPA (or anything like it); you have to clone this
+repo and then wire it into your Emacs runtime.  It's not difficult
+though.
+
+Supposing that you put your third party non ~package.el~ tracked
+packages under ~$HOME/.emacs.d/extras~ --- of course, if you put them
+somewhere else change the following accordingly --- then:
+
+#+BEGIN_EXAMPLE
+  $ mkdir -p $HOME/.emacs.d/extras
+  $ cd $HOME/.emacs.d/extras
+  $ git clone https://github.com/cryptorick/standalone-inferior-picolisp
+#+END_EXAMPLE
+
+** Configure
+
+I'm assuming that you are acquainted with Emacs configurations that
+use the ~use-package~ macro.
+
+In your Emacs init file, add these lines to your org mode setup.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Enable Org Babel for picolisp
+  (require 'ob-picolisp)
+  (use-package inferior-picolisp
+    :load-path "~/.emacs.d/extras/standalone-inferior-picolisp")
+#+END_SRC
