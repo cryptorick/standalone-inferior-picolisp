@@ -51,13 +51,48 @@ somewhere else change the following accordingly --- then:
 ** Configure
 
 I'm assuming that you are acquainted with Emacs configurations that
-use the ~use-package~ macro.
+use the ~use-package~ macro.  (If not, crawl out from under your rock
+and [[https://github.com/jwiegley/use-package/blob/master/README.md][RTFM]] to see what you've been missing out on. :)
 
 In your Emacs init file, add these lines to your org mode setup.
 
 #+BEGIN_SRC emacs-lisp
   ;; Enable Org Babel for picolisp
-  (require 'ob-picolisp)
-  (use-package inferior-picolisp
-    :load-path "~/.emacs.d/extras/standalone-inferior-picolisp")
+  (use-package ob-picolisp
+    :init
+    (use-package inferior-picolisp
+      ;; git clone https://github.com/cryptorick/standalone-inferior-picolisp
+      :load-path "~/.emacs.d/extras/standalone-inferior-picolisp"))
 #+END_SRC
+
+(Note the comment above with the ~git clone~ command --- that is just
+to remind me where I got the package from (since it wasn't sourced
+from MELPA, for instance).)
+
+*** Caveat for the configure step
+
+One caveat here is that ~ob-picolisp~ assumes that the ~pil~ script is
+on your ~PATH~.  If this is not the case, either put it somewhere on
+your ~PATH~ (I recommend this) or tweak the variable
+~org-babel-picolisp-cmd~ in your setup --- its value must be the full
+path of the ~pil~ script, as in the following example.
+
+#+begin_src emacs-lisp
+  ;; Enable Org Babel for picolisp
+  (use-package ob-picolisp
+    :init
+    (setq org-babel-picolisp-cmd "/path/on/your/host/to/pil")
+    (use-package inferior-picolisp
+      ;; git clone https://github.com/cryptorick/standalone-inferior-picolisp
+      :load-path "~/.emacs.d/extras/standalone-inferior-picolisp"))
+#+end_src
+
+** Afterward
+
+You should be on your way to Babel-ing ("babbling" :) or literate
+programming with pil in Emacs.
+
+This is a good time to reiterate that this rigmarole was only
+necessary to get flexibeast's picolisp mode working with Org Babel
+/with sessions/.  This rigmarole is /not necessary/ if you use tj64's
+picolisp mode.
